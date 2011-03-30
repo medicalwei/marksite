@@ -55,6 +55,8 @@ function parse()
 	if (mkdir(MARKSITE_DST_PATH))
 	{
 		generate_contents("");
+		# put contents other than php to destination directory
+		copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
 	}
 	else
 	{
@@ -130,9 +132,6 @@ function generate_contents($dir)
 			die("Cannot open markdown file: $src_file.markdown");
 		}
 	}
-
-	# put contents other than php to destination directory
-	copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
 
 }
 
