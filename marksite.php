@@ -22,16 +22,26 @@ function empty_dir($dir) {
 	rmdir($dir);
 }
 
-function copy_theme($dir, $dest) {
-	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::SELF_FIRST);
-	mkdir("$dest/$dir");
-	foreach ($iterator as $path) {
-		if ($path->isDir()) {
-			mkdir($path->__toString());
-		}
-		else if (!preg_match("/\.php$/", $path->__toString())) # don't copy php
+function copy_files($src, $dst) {
+	$ignored_files = array("php", "markdown", "html");
+	$ignored_files_re = implode("|", $ignored_files);
+
+	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($src), RecursiveIteratorIterator::SELF_FIRST);
+	foreach ($iterator as $path) 
+	{
+		$src_path = $path->__toString();
+		$dst_path = preg_replace("/^$src/",$dst,$src_path);
+		if ($path->isDir())
 		{
-			copy($path->__toString(), "$dest/".$path->__toString());
+			if( !file_exists($dst_path) )
+			{
+				mkdir($dst_path);
+			}
+		}
+		# don't copy hidden files and prohibited files
+		else if (!preg_match("/(^(\.)|\.($ignored_files_re)\$)/", $src_path))
+		{
+			copy($src_path, $dst_path);
 		}
 	}
 }
@@ -84,7 +94,7 @@ function generate_contents($dir)
 		}
 		else if ($page = fopen("$src_file.markdown", "r"))
 		{
-			print "$dir/$file  -  $title\n";
+			print("$dir/$file  -  $title\n");
 
 			# read file, convert it from Markdown to HTML
 			$contents = Markdown(fread($page, filesize("$src_file.markdown")));
@@ -95,7 +105,7 @@ function generate_contents($dir)
 				ob_start();
 				
 				# run theme, generate content
-				include MARKSITE_THEME_PATH."/page.php";
+				include MARKSITE_SRC_PATH."/".MARKSITE_THEME_PATH."/page.php";
 				
 				# get output
 				$themed_contents = ob_get_contents();
@@ -121,8 +131,8 @@ function generate_contents($dir)
 		}
 	}
 
-	# put contents other than php to destination theme directory
-	copy_theme(MARKSITE_THEME_PATH, MARKSITE_DST_PATH);
+	# put contents other than php to destination directory
+	copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
 
 }
 
