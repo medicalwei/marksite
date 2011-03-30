@@ -86,7 +86,7 @@ class Marksite_Parser
 			$src_file = MARKSITE_SRC_PATH.$dir.$file;
 			if (is_dir($src_file))
 			{
-				$menu[$file] = $this->generate_menu($dir.$file."/");
+				$menu[$file] = array($title, $this->generate_menu($dir.$file."/"));
 			}
 			else if (file_exists("$src_file.markdown") || file_exists("$src_file.php") || file_exists("$src_file.html"))
 			{
@@ -118,21 +118,14 @@ class Marksite_Parser
 			$target_menu = $this->menu;
 			for ($i = 0; $i < $layer; $i++)
 			{
-				$target_menu = $this->menu[$this->current[$i]];
+				$target_menu = $this->menu[$this->current[$i]][1];
 			}
 
 			foreach ($target_menu as $file => $title)
 			{
 				if (is_array($title))
 				{
-					if (is_string($title["index"]))
-					{
-						$title = $title["index"];
-					}
-					else
-					{
-						$title = $file;
-					}
+					$title = $title[0];
 
 					$uri = $uri_before.$file;
 				}
