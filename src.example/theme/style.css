@@ -1,0 +1,72 @@
+header, article, footer, hgroup {
+  display: block; }
+
+a {
+  color: inherit; }
+
+html {
+  background: #ebf6f7;
+  margin: 0;
+  font-face: "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
+  html body {
+    width: 600px;
+    margin: 0 auto; }
+    html body header {
+      background: #2a83a2;
+      padding: 10px 20px;
+      color: #e8ecef;
+      text-shadow: 0 1px 0 #84a2d4; }
+      html body header hgroup {
+        text-align: center; }
+        html body header hgroup h1 {
+          margin: 10px 0 5px; }
+        html body header hgroup h2 {
+          font-size: 0.8em;
+          margin: 5px 0 10px; }
+      html body header nav#mainMenu {
+        display: table;
+        width: 100%; }
+        html body header nav#mainMenu ul {
+          margin: 10px 0;
+          padding: 0;
+          display: table-row;
+          width: 100%; }
+          html body header nav#mainMenu ul li {
+            display: table-cell;
+            width: 33.33%;
+            text-align: center; }
+            html body header nav#mainMenu ul li a {
+              display: block;
+              text-decoration: none;
+              line-height: 1.5em; }
+            html body header nav#mainMenu ul li.current a {
+              border-bottom: 2px solid #84a2d4; }
+    html body article {
+      background: #a0d8ef;
+      color: #274a78;
+      text-shadow: 0 1px 0 #c1e4e9;
+      padding: 10px 20px;
+      border-radius: 0 0 10px 10px;
+      -webkit-border-radius: 0 0 10px 10px;
+      -moz-border-radius: 0 0 10px 10px;
+      -o-border-radius: 0 0 10px 10px;
+      box-shadow: 0 1px 0 #84a2d4;
+      -webkit-box-shadow: 0 1px 0 #84a2d4;
+      -moz-box-shadow: 0 1px 0 #84a2d4;
+      -o-box-shadow: 0 1px 0 #84a2d4; }
+      html body article h1 {
+        font-size: 1.5em; }
+      html body article h2 {
+        font-size: 1.4em; }
+      html body article h3 {
+        font-size: 1.3em; }
+      html body article h4 {
+        font-size: 1.2em; }
+      html body article h5 {
+        font-size: 1.1em; }
+      html body article h6 {
+        font-size: 1em; }
+    html body footer {
+      padding: 10px 20px;
+      font-size: 0.8em;
+      color: #698aab; }

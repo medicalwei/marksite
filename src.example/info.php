@@ -1,6 +1,6 @@
 <?php
 $contents = array(
 	"index" => "Home",
-	"aboutme" => "About me",
-	"something" => "Something", # this is an item contains another one
+	"foo" => "Foo",
+	"directory_example" => "Directory Example", # this is an item contains another one
 );
