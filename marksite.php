@@ -105,7 +105,7 @@ class Marksite_Parser
 	function menu($layer)
 	{
 		$output = "";
-		if (has_menu)
+		if ($this->has_menu($layer))
 		{
 			$ancestors = array_slice($this->current, 0, $layer);
 			$uri_before = MARKSITE_ABSOLUTE_PATH."/";
