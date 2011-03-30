@@ -6,6 +6,9 @@
 	<title><?php echo $title; ?></title>
 </head>
 <body>
+	<nav>
+		<ul><?php echo $this->menu(0); ?></ul>
+	</nav>
 	<article>
 		<?php echo $contents; ?>
 	</article>

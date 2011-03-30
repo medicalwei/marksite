@@ -7,5 +7,6 @@
 
 # path to theme (in MARKSITE_SRC_PATH)
 @define( "MARKSITE_THEME_PATH", "theme" );
+@define( "MARKSITE_ABSOLUTE_PATH", "/html" );
 
 ?>

@@ -7,7 +7,7 @@ and Markdown.
 Steps to generate contents
 --------------------------
 1. Put your content into `src/[pagename].markdown` using markdown syntax
-2. Write `"Page title" => [pagename],` into `src/page.php`
+2. Write `"[pagename]" => "Page title",` into `src/page.php`
 3. run `marksite.php`
 4. You've done!
 
