@@ -171,7 +171,7 @@ class Marksite_Parser
 			ob_start();
 			
 			# run theme, generate content
-			include MARKSITE_THEME_PATH."page.php";
+			include MARKSITE_SRC_PATH.MARKSITE_THEME_PATH."page.php";
 			
 			# get output
 			$themed_contents = ob_get_contents();
