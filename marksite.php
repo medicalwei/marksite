@@ -38,7 +38,8 @@ class Marksite_Parser
 		foreach ($iterator as $path) 
 		{
 			$src_path = $path->__toString();
-			$dst_path = preg_replace("/^$src/",$dst,$src_path);
+			$quoted_src = preg_quote($src, '/'); # escape quote
+			$dst_path = preg_replace("/^$quoted_src/",$dst,$src_path);
 			if ($path->isDir())
 			{
 				if( !file_exists($dst_path) )
@@ -64,8 +65,8 @@ class Marksite_Parser
 
 		if (mkdir(MARKSITE_DST_PATH))
 		{
-			$this->menu = $this->generate_menu("/");
-			$this->generate_contents("/");
+			$this->menu = $this->generate_menu("");
+			$this->generate_contents("");
 			# put contents other than php to destination directory
 			$this->copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
 		}
@@ -78,7 +79,7 @@ class Marksite_Parser
 
 	function generate_menu($dir)
 	{
-		include MARKSITE_SRC_PATH."$dir/info.php";
+		include MARKSITE_SRC_PATH."$dir"."info.php";
 		$menu = array();
 
 		foreach ( $contents as $file => $title )
@@ -108,7 +109,7 @@ class Marksite_Parser
 		if ($this->has_menu($layer))
 		{
 			$ancestors = array_slice($this->current, 0, $layer);
-			$uri_before = MARKSITE_ABSOLUTE_PATH."/";
+			$uri_before = MARKSITE_ABSOLUTE_PATH;
 
 			if($layer > 0)
 			{
@@ -162,6 +163,11 @@ class Marksite_Parser
 		return $output;
 	}
 
+	function theme_path()
+	{
+		return MARKSITE_DST_PATH.MARKSITE_THEME_PATH;
+	}
+
 	function write_themed($dst_file, $title, $contents)
 	{
 		if ($page_output = fopen("$dst_file.html", "c"))
@@ -170,7 +176,7 @@ class Marksite_Parser
 			ob_start();
 			
 			# run theme, generate content
-			include MARKSITE_SRC_PATH."/".MARKSITE_THEME_PATH."/page.php";
+			include MARKSITE_SRC_PATH.MARKSITE_THEME_PATH."page.php";
 			
 			# get output
 			$themed_contents = ob_get_contents();
