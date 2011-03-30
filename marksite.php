@@ -67,7 +67,6 @@ class Marksite_Parser
 		{
 			$this->menu = $this->generate_menu("");
 			$this->generate_contents("");
-			# put contents other than php to destination directory
 			$this->copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
 		}
 		else
@@ -163,20 +162,16 @@ class Marksite_Parser
 		return $output;
 	}
 
-	function theme_path()
-	{
-		return MARKSITE_DST_PATH.MARKSITE_THEME_PATH;
-	}
-
 	function write_themed($dst_file, $title, $contents)
 	{
+		$theme_path = MARKSITE_ABSOLUTE_PATH.MARKSITE_THEME_PATH;
 		if ($page_output = fopen("$dst_file.html", "c"))
 		{
 			# starting output buffer
 			ob_start();
 			
 			# run theme, generate content
-			include MARKSITE_SRC_PATH.MARKSITE_THEME_PATH."page.php";
+			include MARKSITE_THEME_PATH."page.php";
 			
 			# get output
 			$themed_contents = ob_get_contents();
