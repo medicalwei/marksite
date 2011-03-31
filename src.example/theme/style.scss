@@ -1,3 +1,17 @@
+$website_background: #ebf6f7;
+
+$header_background: #2a83a2;
+$header_color: #e8ecef;
+$header_shadow: darken($header_color, 30%);
+
+$article_background: #a0d8ef;
+$article_color: #274a78;
+$article_shadow: lighten($article_color, 55%);
+$article_box_shadow: darken($article_background, 10%);
+
+$footer_color: #698aab;
+$footer_shadow: mix($footer_color, $website_background);
+
 header, article, footer, hgroup
 {
 	display: block;
@@ -7,13 +21,15 @@ header, article, footer, hgroup
 a
 {
 	color: inherit;
+	text-decoration: none;
 }
 
 html
 {
-	background: #ebf6f7;
+	background: $website_background;
 	margin: 0;
 	font-face: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	line-height: 1.25em;
 
 	body
 	{
@@ -22,13 +38,18 @@ html
 
 		header
 		{
-			background: #2a83a2;
 			padding: 10px 20px;
-			color: #e8ecef;
-			text-shadow: 0 1px 0 #84a2d4;
+
+			background: $header_background;
+			color: $header_color;
+			text-shadow: 0 1px 0 $header_shadow;
+
+
+
 
 			hgroup
 			{
+
 				text-align: center;
 
 				h1
@@ -41,11 +62,16 @@ html
 					font-size: 0.8em;
 					margin: 5px 0 10px;
 				}
+
 			}
+
+
+
 			nav#mainMenu
 			{
 				display: table;
 				width: 100%;
+
 				ul
 				{
 					margin: 10px 0;
@@ -56,7 +82,7 @@ html
 					li
 					{
 						display: table-cell;
-						width: 33.33%;
+						width: 50%;
 						text-align: center;
 
 						a
@@ -68,7 +94,7 @@ html
 
 						&.current a
 						{
-							border-bottom: 2px solid #84a2d4;
+							border-bottom: 2px solid lighten($header_background, 20%);
 						}
 
 					}
@@ -78,18 +104,20 @@ html
 
 		article
 		{
-			background: #a0d8ef;
-			color: #274a78;
-			text-shadow: 0 1px 0 #c1e4e9;
+			background: $article_background;
+			color: $article_color;
+			text-shadow: 0 1px 0 $article_shadow;
 			padding: 10px 20px;
+
 			border-radius: 0 0 10px 10px;
 			-webkit-border-radius: 0 0 10px 10px;
 			-moz-border-radius: 0 0 10px 10px;
 			-o-border-radius: 0 0 10px 10px;
-			box-shadow: 0 1px 0 #84a2d4;
-			-webkit-box-shadow: 0 1px 0 #84a2d4;
-			-moz-box-shadow: 0 1px 0 #84a2d4;
-			-o-box-shadow: 0 1px 0 #84a2d4;
+
+			box-shadow: 0 1px 0 $article_box_shadow;
+			-webkit-box-shadow: 0 1px 0 $article_box_shadow;
+			-moz-box-shadow: 0 1px 0 $article_box_shadow;
+			-o-box-shadow: 0 1px 0 $article_box_shadow;
 
 			h1 { font-size: 1.5em; }
 			h2 { font-size: 1.4em; }
@@ -97,13 +125,33 @@ html
 			h4 { font-size: 1.2em; }
 			h5 { font-size: 1.1em; }
 			h6 { font-size: 1em; }
+
+			a
+			{
+				color: lighten($article_color, 10%);
+
+				&:hover
+				{
+					color: lighten($article_color, 5%);
+				}
+			}
 		}
 		
 		footer
 		{
 			padding: 10px 20px;
 			font-size: 0.8em;
-			color: #698aab;
+			color: $footer_color;
+
+			a
+			{
+				color: lighten($footer_color, 10%);
+
+				&:hover
+				{
+					color: lighten($footer_color, 5%);
+				}
+			}
 		}
 
 	}
