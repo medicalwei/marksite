@@ -157,7 +157,10 @@ class Marksite_Parser
 
 	function write_themed($dst_file, $title, $contents)
 	{
+		/* some usable variable for theme */
 		$theme_path = MARKSITE_ABSOLUTE_PATH.MARKSITE_THEME_PATH;
+		$home_path = MARKSITE_ABSOLUTE_PATH;
+
 		if ($page_output = fopen("$dst_file.html", "c"))
 		{
 			# starting output buffer

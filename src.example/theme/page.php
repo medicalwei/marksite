@@ -11,7 +11,7 @@
 	<header>
 
 		<hgroup>
-			<h1>Marksite Template</h1>
+			<h1><a href="<?php echo $home_path ?>">Marksite Template</a></h2>
 			<h2>The website title is changable in src/theme/page.php</h2>
 		</hgroup>
 
