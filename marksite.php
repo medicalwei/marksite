@@ -127,7 +127,7 @@ class Marksite_Parser
 				{
 					$title = $title[0];
 
-					$uri = $uri_before.$file;
+					$uri = $uri_before.$file."/";
 				}
 				else
 				{
