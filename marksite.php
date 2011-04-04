@@ -131,7 +131,14 @@ class Marksite_Parser
 				}
 				else
 				{
-					$uri = $uri_before.$file.".html";
+					if ($file == "index") # prevent showing index.html
+					{
+						$uri = $uri_before;
+					}
+					else
+					{
+						$uri = $uri_before.$file.".html";
+					}
 				}
 					
 
