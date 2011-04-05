@@ -1,3 +1,5 @@
+$main_color: #274a78;
+
 $website_background: #ebf6f7;
 
 $header_background: #2a83a2;
@@ -69,20 +71,19 @@ html
 
 			nav#mainMenu
 			{
-				display: table;
-				width: 100%;
+				display: block;
+				text-align: center;
 
 				ul
 				{
-					margin: 10px 0;
+					margin: 0;
 					padding: 0;
-					display: table-row;
-					width: 100%;
+					display: inline;
 
 					li
 					{
-						display: table-cell;
-						width: 50%;
+						display: inline-block;
+						width: 10em;
 						text-align: center;
 
 						a
@@ -92,7 +93,7 @@ html
 							line-height: 1.5em;
 						}
 
-						&.current a
+						&.current a, &.current-ancestor a
 						{
 							border-bottom: 2px solid lighten($header_background, 20%);
 						}

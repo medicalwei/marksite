@@ -1,5 +1,5 @@
 <?php
 $contents = array(
-	"index" => "Directory example", # Necessary for directory
+	"index" => "Dir Home", # Necessary for directory
 	"bar" => "Bar",
 );

@@ -26,22 +26,21 @@ html {
           font-size: 0.8em;
           margin: 5px 0 10px; }
       html body header nav#mainMenu {
-        display: table;
-        width: 100%; }
+        display: block;
+        text-align: center; }
         html body header nav#mainMenu ul {
-          margin: 10px 0;
+          margin: 0;
           padding: 0;
-          display: table-row;
-          width: 100%; }
+          display: inline; }
           html body header nav#mainMenu ul li {
-            display: table-cell;
-            width: 50%;
+            display: inline-block;
+            width: 10em;
             text-align: center; }
             html body header nav#mainMenu ul li a {
               display: block;
               text-decoration: none;
               line-height: 1.5em; }
-            html body header nav#mainMenu ul li.current a {
+            html body header nav#mainMenu ul li.current a, html body header nav#mainMenu ul li.current-ancestor a {
               border-bottom: 2px solid #5db6d5; }
     html body article {
       background: #a0d8ef;
