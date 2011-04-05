@@ -99,7 +99,7 @@ class Marksite_Parser
 
 	function has_menu($layer)
 	{
-		return $layer <= count($this->current);
+		return $layer < count($this->current);
 	}
 
 	function menu($layer)
