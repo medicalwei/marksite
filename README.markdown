@@ -10,4 +10,4 @@ Steps to generate contents
 3. Put your content into `src/[pagename].markdown` using markdown syntax.
 4. Write `"[pagename]" => "Page title",` into `src/info.php`.
 5. run `marksite.php`.
-6. All the magic things happens at `html` directory. Hooray!
+6. All the magic things happens at `html` directory. Hurray!
