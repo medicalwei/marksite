@@ -17,6 +17,9 @@
 
 		<nav id="mainMenu">
 			<ul><?php echo $this->menu(0); ?></ul>
+			<?php if ($this->has_menu(1)){ ?>
+			<ul class="submenu"><?php echo $this->menu(1); ?></ul>
+			<?php } ?>
 		</nav>
 
 	</header>

@@ -14,7 +14,7 @@ html {
     width: 600px;
     margin: 0 auto; }
     html body header {
-      padding: 10px 20px;
+      padding: 10px 0 0;
       background: #2a83a2;
       color: #e8ecef;
       text-shadow: 0 1px 0 #8ea1b0; }
@@ -26,22 +26,47 @@ html {
           font-size: 0.8em;
           margin: 5px 0 10px; }
       html body header nav#mainMenu {
-        display: block;
-        text-align: center; }
+        display: block; }
         html body header nav#mainMenu ul {
           margin: 0;
           padding: 0;
-          display: inline; }
+          text-align: center; }
           html body header nav#mainMenu ul li {
             display: inline-block;
-            width: 10em;
             text-align: center; }
             html body header nav#mainMenu ul li a {
               display: block;
               text-decoration: none;
-              line-height: 1.5em; }
-            html body header nav#mainMenu ul li.current a, html body header nav#mainMenu ul li.current-ancestor a {
-              border-bottom: 2px solid #5db6d5; }
+              line-height: 1.5em;
+              padding: 0 1em;
+              background: #1f627a;
+              border-radius: 5px 5px 0 0;
+              -webkit-border-radius: 5px 5px 0 0;
+              -moz-border-radius: 5px 5px 0 0;
+              -o-border-radius: 5px 5px 0 0; }
+            html body header nav#mainMenu ul li.current a, html body header nav#mainMenu ul li.current a:hover {
+              background: #a0d8ef;
+              color: #274a78;
+              text-shadow: 0 1px 0 #cad9ee;
+              box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+              -webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+              -moz-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+              -o-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1); }
+            html body header nav#mainMenu ul li.current-ancestor a, html body header nav#mainMenu ul li.current-ancestor a:hover {
+              background: #34a4cb;
+              box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+              -webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+              -moz-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+              -o-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1); }
+            html body header nav#mainMenu ul li a:hover {
+              background: #2f93b6; }
+          html body header nav#mainMenu ul.submenu {
+            padding-top: 0.5em;
+            background: #34a4cb;
+            box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+            -o-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1); }
     html body article {
       background: #a0d8ef;
       color: #274a78;
@@ -51,10 +76,10 @@ html {
       -webkit-border-radius: 0 0 10px 10px;
       -moz-border-radius: 0 0 10px 10px;
       -o-border-radius: 0 0 10px 10px;
-      box-shadow: 0 1px 0 #74c6e8;
-      -webkit-box-shadow: 0 1px 0 #74c6e8;
-      -moz-box-shadow: 0 1px 0 #74c6e8;
-      -o-box-shadow: 0 1px 0 #74c6e8; }
+      box-shadow: 0 1px 0 #74c6e8, 0 -1px 0 rgba(0, 0, 0, 0.1);
+      -o-box-shadow: 0 1px 0 #74c6e8, 0 -1px 0 rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: 0 1px 0 #74c6e8, 0 -1px 0 rgba(0, 0, 0, 0.1);
+      -webkit-box-shadow: 0 1px 0 #74c6e8, 0 -1px 0 rgba(0, 0, 0, 0.1); }
       html body article h1 {
         font-size: 1.5em; }
       html body article h2 {

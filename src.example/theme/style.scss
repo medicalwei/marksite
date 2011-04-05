@@ -40,7 +40,7 @@ html
 
 		header
 		{
-			padding: 10px 20px;
+			padding: 10px 0 0;
 
 			background: $header_background;
 			color: $header_color;
@@ -72,18 +72,16 @@ html
 			nav#mainMenu
 			{
 				display: block;
-				text-align: center;
 
 				ul
 				{
 					margin: 0;
 					padding: 0;
-					display: inline;
+					text-align: center;
 
 					li
 					{
 						display: inline-block;
-						width: 10em;
 						text-align: center;
 
 						a
@@ -91,14 +89,54 @@ html
 							display: block;
 							text-decoration: none;
 							line-height: 1.5em;
+							padding: 0 1em;
+							background: darken($header_background, 10%);
+							
+							border-radius: 5px 5px 0 0;
+							-webkit-border-radius: 5px 5px 0 0;
+							-moz-border-radius: 5px 5px 0 0;
+							-o-border-radius: 5px 5px 0 0;
 						}
 
-						&.current a, &.current-ancestor a
+						&.current a, &.current a:hover
 						{
-							border-bottom: 2px solid lighten($header_background, 20%);
+							background: $article_background;
+							color: $article_color;
+							text-shadow: 0 1px 0 $article_shadow;
+
+							box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+							-webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+							-moz-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+							-o-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+						}
+
+						&.current-ancestor a, &.current-ancestor a:hover
+						{
+							background: lighten($header_background, 10%);
+
+							box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+							-webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+							-moz-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+							-o-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+						}
+
+						a:hover
+						{
+							background: lighten($header_background, 5%);
 						}
 
 					}
+
+					&.submenu
+					{
+						padding-top: 0.5em;
+						background: lighten($header_background, 10%);
+						box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+						-webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+						-moz-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+						-o-box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+					}
+
 				}
 			}
 		}
@@ -115,10 +153,10 @@ html
 			-moz-border-radius: 0 0 10px 10px;
 			-o-border-radius: 0 0 10px 10px;
 
-			box-shadow: 0 1px 0 $article_box_shadow;
-			-webkit-box-shadow: 0 1px 0 $article_box_shadow;
-			-moz-box-shadow: 0 1px 0 $article_box_shadow;
-			-o-box-shadow: 0 1px 0 $article_box_shadow;
+			box-shadow: 0 1px 0 $article_box_shadow, 0 -1px 0 rgba(0,0,0,0.1);
+			-o-box-shadow: 0 1px 0 $article_box_shadow, 0 -1px 0 rgba(0,0,0,0.1);
+			-moz-box-shadow: 0 1px 0 $article_box_shadow, 0 -1px 0 rgba(0,0,0,0.1);
+			-webkit-box-shadow: 0 1px 0 $article_box_shadow, 0 -1px 0 rgba(0,0,0,0.1);
 
 			h1 { font-size: 1.5em; }
 			h2 { font-size: 1.4em; }
