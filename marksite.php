@@ -242,14 +242,12 @@ class Marksite_Parser
 				ob_end_clean();
 				$this->write_themed($dst_file, $title, $contents);
 			}
-			else if (file_exists("$src_file.html"))
+			else if (file_exists("$src_file.html") && $page = fopen("$src_file.html", "r"))
 			{
 				print("(HTML) $dir$file  -  $title\n");
 
-				ob_start();
-				include "$src_file.html";
-				$contents = ob_get_contents();
-				ob_end_clean();
+				# read file
+				$contents = fread($page, filesize("$src_file.html"));
 				$this->write_themed($dst_file, $title, $contents);
 			}
 			else
