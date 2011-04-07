@@ -126,7 +126,6 @@ class Marksite_Parser
 				if (is_array($title))
 				{
 					$title = $title[0];
-
 					$uri = $uri_before.$file."/";
 				}
 				else
@@ -142,7 +141,7 @@ class Marksite_Parser
 				}
 					
 
-				if ($layer < count($this->current) && $file == $this->current[$layer])
+				if ($file == $this->current[$layer])
 				{
 					if ($layer == count($this->current)-1)
 					{
