@@ -8,7 +8,7 @@ a {
 html {
   background: #ebf6f7;
   margin: 0;
-  font-face: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.25em; }
   html body {
     width: 600px;
