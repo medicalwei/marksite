@@ -31,7 +31,7 @@ class Marksite_Parser
 	}
 
 	function copy_files($src, $dst) {
-		$ignored_files = array("php", "markdown", "html");
+		$ignored_files = array("php", "markdown", "html", "md");
 		$ignored_files_re = implode("|", $ignored_files);
 
 		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($src), RecursiveIteratorIterator::SELF_FIRST);
@@ -88,7 +88,7 @@ class Marksite_Parser
 			{
 				$menu[$file] = array($title, $this->generate_menu($dir.$file."/"));
 			}
-			else if (file_exists("$src_file.markdown") || file_exists("$src_file.php") || file_exists("$src_file.html"))
+			else if (file_exists("$src_file.markdown") || file_exists("$src_file.md") || file_exists("$src_file.php") || file_exists("$src_file.html"))
 			{
 				$menu[$file] = $title;
 			}
@@ -232,6 +232,15 @@ class Marksite_Parser
 				$this->write_themed($dst_file, $title, $contents);
 				fclose($page);
 			}
+			else if (file_exists("$src_file.md") && $page = fopen("$src_file.md", "r"))
+			{
+				print("$dir$file  -  $title\n");
+
+				# read file, convert it from Markdown to HTML
+				$contents = Markdown(fread($page, filesize("$src_file.md")));
+				$this->write_themed($dst_file, $title, $contents);
+				fclose($page);
+			}
 			else if (file_exists("$src_file.php"))
 			{
 				print("(PHP) $dir$file  -  $title\n");
@@ -252,7 +261,7 @@ class Marksite_Parser
 			}
 			else
 			{
-				die("Cannot find file: $src_file.{markdown|php|html}");
+				die("Cannot find file: $src_file.{markdown|md|php|html}");
 			}
 
 			array_pop($this->current);
