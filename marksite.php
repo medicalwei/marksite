@@ -132,7 +132,7 @@ class Marksite_Parser
 				{
 					if ($file == "index") # prevent showing index.html
 					{
-						$uri = $uri_before;
+						continue;
 					}
 					else
 					{
@@ -143,13 +143,14 @@ class Marksite_Parser
 
 				if ($file == $this->current[$layer])
 				{
-					if ($layer == count($this->current)-1)
+					#ancestor: current level, and not index
+					if ($layer < count($this->current)-1 && $this->current[$layer+1] != "index")
 					{
-						$output .= "<li class=\"current\"><a href=\"$uri\">$title</a></li>\n";
+						$output .= "<li class=\"current current-ancestor\"><a href=\"$uri\">$title</a></li>\n";
 					}
 					else
 					{
-						$output .= "<li class=\"current-ancestor\"><a href=\"$uri\">$title</a></li>\n";
+						$output .= "<li class=\"current\"><a href=\"$uri\">$title</a></li>\n";
 					}
 				}
 				else
