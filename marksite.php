@@ -119,52 +119,72 @@ class Marksite_Parser
 		return $menu;
 	}
 
-	function has_menu($layer)
+	function has_menu($level)
 	{
-		return $layer < count($this->current);
+		return $level < count($this->current);
 	}
 
-	function menu($layer)
+	function menu($level, $depth=1)
+	{
+		# prevent error
+		if (!$this->has_menu($level))
+		{
+			return "";
+		}
+
+		$ancestors = array_slice($this->current, 0, $level);
+
+		if($level > 0)
+		{
+			$uri_before .= implode("/", $ancestors)."/";
+		}
+
+		$target_menu = $this->menu;
+		for ($i = 0; $i < $level; $i++)
+		{
+			$target_menu = $this->menu[$this->current[$i]]['menu'];
+		}
+
+		return $this->menu_recursion($target_menu, $level, $depth);
+	}
+
+
+	function menu_recursion($target_menu, $level, $depth)
 	{
 		$output = "";
-		if ($this->has_menu($layer))
+		foreach ($target_menu as $menuitem)
 		{
-			$ancestors = array_slice($this->current, 0, $layer);
+			$uri = $menuitem['uri'];
+			$file = $menuitem['file'];
+			$title = $menuitem['title'];
 
-			if($layer > 0)
+			if ($file == $this->current[$level])
 			{
-				$uri_before .= implode("/", $ancestors)."/";
-			}
-
-			$target_menu = $this->menu;
-			for ($i = 0; $i < $layer; $i++)
-			{
-				$target_menu = $this->menu[$this->current[$i]]['menu'];
-			}
-
-			foreach ($target_menu as $menuitem)
-			{
-				$uri = $menuitem['uri'];
-				$file = $menuitem['file'];
-				$title = $menuitem['title'];
-
-				if ($file == $this->current[$layer])
+				#ancestor: current level, and not index
+				if ($level < count($this->current)-1 && $this->current[$level+1] != "index")
 				{
-					#ancestor: current level, and not index
-					if ($layer < count($this->current)-1 && $this->current[$layer+1] != "index")
-					{
-						$output .= "<li class=\"current-ancestor\"><a href=\"$uri\">$title</a></li>\n";
-					}
-					else
-					{
-						$output .= "<li class=\"current\"><a href=\"$uri\">$title</a></li>\n";
-					}
+					$output .= "<li class=\"current-ancestor\">";
 				}
 				else
 				{
-					$output .= "<li><a href=\"$uri\">$title</a></li>\n";
+					$output .= "<li class=\"current\">";
 				}
 			}
+			else
+			{
+				$output .= "<li>";
+			}
+
+			$output .= "<a href=\"$uri\">$title</a>";
+
+			if ( $depth>1 && isset($menuitem['menu']) )
+			{
+				$output .= "\n<ul>\n";
+				$output .= $this->menu_recursion($menuitem['menu'], $level+1, $depth-1);
+				$output .= "</ul>\n";
+			}
+
+			$output .= "</li>\n";
 		}
 		return $output;
 	}
