@@ -65,7 +65,7 @@ class Marksite_Parser
 
 		if (mkdir(MARKSITE_DST_PATH))
 		{
-			$this->menu = $this->generate_menu("");
+			$this->menu = $this->prepare_menu("");
 			$this->generate_contents("");
 			$this->copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
 		}
@@ -76,21 +76,43 @@ class Marksite_Parser
 
 	}
 
-	function generate_menu($dir)
+	function prepare_menu($dir)
 	{
 		include MARKSITE_SRC_PATH."$dir"."info.php";
 		$menu = array();
+		$uri_before = MARKSITE_ABSOLUTE_PATH.$dir;
+
+		# prevent menu_hidden not set
+		if ( !isset($menu_hidden) )
+		{
+			$menu_hidden = array();
+		}
 
 		foreach ( $contents as $file => $title )
 		{
+			# skip hidden one
+			if ( in_array( $file, $menu_hidden ) )
+			{
+				continue;
+			}
+
 			$src_file = MARKSITE_SRC_PATH.$dir.$file;
 			if (is_dir($src_file))
 			{
-				$menu[$file] = array($title, $this->generate_menu($dir.$file."/"));
+				$menu[$file] = array(
+						'uri' => $uri_before.$file."/",
+						'file' => $file,
+						'title' => $title,
+						'menu' => $this->prepare_menu($dir.$file."/")
+						);
 			}
 			else if (file_exists("$src_file.markdown") || file_exists("$src_file.md") || file_exists("$src_file.php") || file_exists("$src_file.html"))
 			{
-				$menu[$file] = $title;
+				$menu[$file] = array(
+						'uri' => $uri_before.$file.".html",
+						'file' => $file,
+						'title' => $title,
+						);
 			}
 		}
 
@@ -108,7 +130,6 @@ class Marksite_Parser
 		if ($this->has_menu($layer))
 		{
 			$ancestors = array_slice($this->current, 0, $layer);
-			$uri_before = MARKSITE_ABSOLUTE_PATH;
 
 			if($layer > 0)
 			{
@@ -118,35 +139,21 @@ class Marksite_Parser
 			$target_menu = $this->menu;
 			for ($i = 0; $i < $layer; $i++)
 			{
-				$target_menu = $this->menu[$this->current[$i]][1];
+				$target_menu = $this->menu[$this->current[$i]]['menu'];
 			}
 
-			foreach ($target_menu as $file => $title)
+			foreach ($target_menu as $menuitem)
 			{
-				if (is_array($title))
-				{
-					$title = $title[0];
-					$uri = $uri_before.$file."/";
-				}
-				else
-				{
-					if ($file == "index") # prevent showing index.html
-					{
-						continue;
-					}
-					else
-					{
-						$uri = $uri_before.$file.".html";
-					}
-				}
-					
+				$uri = $menuitem['uri'];
+				$file = $menuitem['file'];
+				$title = $menuitem['title'];
 
 				if ($file == $this->current[$layer])
 				{
 					#ancestor: current level, and not index
 					if ($layer < count($this->current)-1 && $this->current[$layer+1] != "index")
 					{
-						$output .= "<li class=\"current current-ancestor\"><a href=\"$uri\">$title</a></li>\n";
+						$output .= "<li class=\"current-ancestor\"><a href=\"$uri\">$title</a></li>\n";
 					}
 					else
 					{
