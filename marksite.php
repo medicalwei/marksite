@@ -99,7 +99,7 @@ class Marksite_Parser
 			$src_file = MARKSITE_SRC_PATH.$dir.$file;
 			if (is_dir($src_file))
 			{
-				$menu[$file] = array(
+				$item = array(
 						'uri' => $uri_before.$file."/",
 						'file' => $file,
 						'title' => $title,
@@ -108,12 +108,14 @@ class Marksite_Parser
 			}
 			else if (file_exists("$src_file.markdown") || file_exists("$src_file.md") || file_exists("$src_file.php") || file_exists("$src_file.html"))
 			{
-				$menu[$file] = array(
+				$item = array(
 						'uri' => $uri_before.$file.".html",
 						'file' => $file,
 						'title' => $title,
 						);
 			}
+
+			array_push($menu, $item);
 		}
 
 		return $menu;
