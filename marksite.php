@@ -15,6 +15,9 @@ class Marksite_Parser
 	# array indicating current position
 	var $current = array();
 
+	# blocks
+	var $blocks = array();
+
 	# recursive delete from http://php.net/manual/en/class.recursivedirectoryiterator.php
 	function empty_dir($dir) {
 		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::CHILD_FIRST);
@@ -65,9 +68,27 @@ class Marksite_Parser
 
 		if (mkdir(MARKSITE_DST_PATH))
 		{
+			print("== Generating Menu ==\n");
 			$this->menu = $this->prepare_menu("");
+			print("\n");
+
+			if (is_dir(MARKSITE_BLOCKS_PATH))
+			{
+				print("== Generating Blocks ==\n");
+				$this->prepare_blocks(MARKSITE_BLOCKS_PATH);
+				print("\n");
+			}
+
+			print("== Generating Contents ==\n");
 			$this->generate_contents("");
+			print("\n");
+
+			print("== Copying Files ==\n");
 			$this->copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
+			print("\n");
+
+			print("== All Done! ==\n");
+			print("\n");
 		}
 		else
 		{
@@ -253,50 +274,75 @@ class Marksite_Parser
 					die("Cannot create new directory: $dst_file");
 				}
 			}
-			else if (file_exists("$src_file.markdown") && $page = fopen("$src_file.markdown", "r"))
+			else if ($contents = $this->generate_context($src_file))
 			{
-				print("$dir$file  -  $title\n");
-
-				# read file, convert it from Markdown to HTML
-				$contents = Markdown(fread($page, filesize("$src_file.markdown")));
 				$this->write_themed($dst_file, $title, $contents);
-				fclose($page);
-			}
-			else if (file_exists("$src_file.md") && $page = fopen("$src_file.md", "r"))
-			{
-				print("$dir$file  -  $title\n");
-
-				# read file, convert it from Markdown to HTML
-				$contents = Markdown(fread($page, filesize("$src_file.md")));
-				$this->write_themed($dst_file, $title, $contents);
-				fclose($page);
-			}
-			else if (file_exists("$src_file.php"))
-			{
-				print("(PHP) $dir$file  -  $title\n");
-
-				ob_start();
-				include "$src_file.php";
-				$contents = ob_get_contents();
-				ob_end_clean();
-				$this->write_themed($dst_file, $title, $contents);
-			}
-			else if (file_exists("$src_file.html") && $page = fopen("$src_file.html", "r"))
-			{
-				print("(HTML) $dir$file  -  $title\n");
-
-				# read file
-				$contents = fread($page, filesize("$src_file.html"));
-				$this->write_themed($dst_file, $title, $contents);
-			}
-			else
-			{
-				die("Cannot find file: $src_file.{markdown|md|php|html}");
 			}
 
 			array_pop($this->current);
 		}
 
+	}
+
+	function prepare_blocks($dir)
+	{
+		$dir_handler = opendir($dir);
+		while (($filename = readdir($dir_handler)) !== false) {
+			if ($filename == "." || $filename == "..")
+			{
+				continue;
+			}
+			$block_name = preg_replace("/\.([^\.]*)$/","",$filename);
+			$src_file = $dir.$block_name;
+			if ($contents = $this->generate_context($src_file))
+			{
+				$this->block[$block_name] = $contents;
+			}
+		}
+	}
+	
+	function generate_context($src_file)
+	{
+		$contents = false;
+
+		if (file_exists("$src_file.md") && $page = fopen("$src_file.md", "r"))
+		{
+			print("$src_file.md\n");
+
+			# read file, convert it from Markdown to HTML
+			$contents = Markdown(fread($page, filesize("$src_file.md")));
+			fclose($page);
+		}
+		else if (file_exists("$src_file.markdown") && $page = fopen("$src_file.markdown", "r"))
+		{
+			print("$src_file.markdown\n");
+
+			# read file, convert it from Markdown to HTML
+			$contents = Markdown(fread($page, filesize("$src_file.markdown")));
+			fclose($page);
+		}
+		else if (file_exists("$src_file.php"))
+		{
+			print("$src_file.php\n");
+
+			ob_start();
+			include "$src_file.php";
+			$contents = ob_get_contents();
+			ob_end_clean();
+		}
+		else if (file_exists("$src_file.html") && $page = fopen("$src_file.html", "r"))
+		{
+			print("$src_file.html\n");
+
+			# read file
+			$contents = fread($page, filesize("$src_file.html"));
+		}
+		else
+		{
+			print("Warning: $src_file.{markdown|md|php|html} does not exist.\n");
+		}
+
+		return $contents;
 	}
 
 }
