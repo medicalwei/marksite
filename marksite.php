@@ -275,6 +275,10 @@ class Marksite_Parser
 					die("Cannot create new directory: $dst_file");
 				}
 			}
+			else if (file_exists("$src_file"))
+			{
+				copy($src_file, $dst_file);
+			}
 			else
 			{
 				$contents = $this->generate_context($src_file);
