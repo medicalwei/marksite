@@ -118,7 +118,15 @@ class Marksite_Parser
 			}
 
 			$src_file = MARKSITE_SRC_PATH.$dir.$file;
-			if (is_dir($src_file))
+
+			if (preg_match("/^http:\/\//", $file))
+			{
+				$menu[$file] = array(
+						'uri' => $file,
+						'title' => $title
+						);
+			}
+			else if (is_dir($src_file))
 			{
 				$menu[$file] = array(
 						'uri' => $uri_before.$file."/",
@@ -130,7 +138,7 @@ class Marksite_Parser
 			{
 				$menu[$file] = array(
 						'uri' => $uri_before.$file.".html",
-						'title' => $title,
+						'title' => $title
 						);
 			}
 		}
@@ -245,6 +253,11 @@ class Marksite_Parser
 		
 		foreach ( $contents as $file => $title )
 		{
+			if (preg_match("/^http:\/\//", $file))
+			{
+				continue;
+			}
+
 			$src_file = MARKSITE_SRC_PATH.$dir.$file;
 			$dst_file = MARKSITE_DST_PATH.$dir.$file;
 
