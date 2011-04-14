@@ -275,8 +275,9 @@ class Marksite_Parser
 					die("Cannot create new directory: $dst_file");
 				}
 			}
-			else if ($contents = $this->generate_context($src_file))
+			else
 			{
+				$contents = $this->generate_context($src_file);
 				$this->write_themed($dst_file, $title, $contents);
 			}
 
@@ -295,23 +296,24 @@ class Marksite_Parser
 			}
 			$block_name = preg_replace("/\.([^\.]*)$/","",$filename);
 			$src_file = $dir.$block_name;
-			if ($contents = $this->generate_context($src_file))
-			{
-				$this->block[$block_name] = $contents;
-			}
+			$this->block[$block_name] = $this->generate_context($src_file);
 		}
 	}
 	
 	function generate_context($src_file)
 	{
-		$contents = false;
+		$contents = "";
 
 		if (file_exists("$src_file.md") && $page = fopen("$src_file.md", "r"))
 		{
 			print("$src_file.md\n");
 
 			# read file, convert it from Markdown to HTML
-			$contents = Markdown(fread($page, filesize("$src_file.md")));
+			$size = filesize("$src_file.md");
+			if ($size > 0)
+			{
+				$contents = Markdown(fread($page, $size));
+			}
 			fclose($page);
 		}
 		else if (file_exists("$src_file.markdown") && $page = fopen("$src_file.markdown", "r"))
@@ -319,7 +321,11 @@ class Marksite_Parser
 			print("$src_file.markdown\n");
 
 			# read file, convert it from Markdown to HTML
-			$contents = Markdown(fread($page, filesize("$src_file.markdown")));
+			$size = filesize("$src_file.markdown");
+			if ($size > 0)
+			{
+				$contents = Markdown(fread($page, $size));
+			}
 			fclose($page);
 		}
 		else if (file_exists("$src_file.php"))
@@ -336,7 +342,11 @@ class Marksite_Parser
 			print("$src_file.html\n");
 
 			# read file
-			$contents = fread($page, filesize("$src_file.html"));
+			$size = filesize("$src_file.html");
+			if ($size > 0)
+			{
+				$contents = fread($page, $size);
+			}
 		}
 		else
 		{
