@@ -32,9 +32,13 @@
 	</article>
 
 
+	<?php
+	/*
 	<aside>
 		<?php echo $this->block['sidebar']; ?>
 	</aside>
+	*/
+	?>
 
 
 
