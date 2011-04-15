@@ -280,8 +280,9 @@ class Marksite_Parser
 					die("Cannot create new directory: $dst_file");
 				}
 			}
-			else if (file_exists("$src_file"))
+			else if (file_exists($src_file))
 			{
+				print("$src_file (copy)\n");
 				copy($src_file, $dst_file);
 			}
 			else
