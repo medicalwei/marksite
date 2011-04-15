@@ -211,7 +211,12 @@ class Marksite_Parser
 	function write_themed($dst_file, $title, $contents)
 	{
 		/* some usable variable for theme */
+
+		/*
+		moved theme out of src. we cannot know where is the resources of the theme.
 		$theme_path = MARKSITE_ABSOLUTE_PATH.MARKSITE_THEME_PATH;
+		*/
+
 		$home_path = MARKSITE_ABSOLUTE_PATH;
 
 		if ($page_output = fopen("$dst_file.html", "c"))
@@ -220,7 +225,7 @@ class Marksite_Parser
 			ob_start();
 			
 			# run theme, generate content
-			include MARKSITE_SRC_PATH.MARKSITE_THEME_PATH."page.php";
+			include MARKSITE_THEME_PATH."page.php";
 			
 			# get output
 			$themed_contents = ob_get_contents();

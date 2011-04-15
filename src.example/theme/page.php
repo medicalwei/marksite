@@ -3,7 +3,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" href="<?php echo $theme_path; ?>style.css" type="text/css" media="screen" charset="utf-8"/>
+	<link rel="stylesheet" href="<?php echo $home_path; ?>theme/style.css" type="text/css" media="screen" charset="utf-8"/>
 	<title><?php echo $title; ?> | Marksite Template</title>
 </head>
 
