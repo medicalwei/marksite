@@ -43,17 +43,21 @@ class Marksite_Parser
 			$src_path = $path->__toString();
 			$quoted_src = preg_quote($src, '/'); # escape quote
 			$dst_path = preg_replace("/^$quoted_src/",$dst,$src_path);
-			if ($path->isDir())
-			{
-				if( !file_exists($dst_path) )
-				{
-					mkdir($dst_path);
-				}
-			}
+
 			# don't copy hidden files and prohibited files
-			else if (!preg_match("/(^(\.)|\.($ignored_files_re)\$)/", $src_path))
+			if (!preg_match("/(\/\.[^\/\.]|\.($ignored_files_re)\$)/", $src_path))
 			{
-				copy($src_path, $dst_path);
+				if ($path->isDir())
+				{
+					if( !file_exists($dst_path) )
+					{
+						mkdir($dst_path);
+					}
+				}
+				else
+				{
+					copy($src_path, $dst_path);
+				}
 			}
 		}
 	}
