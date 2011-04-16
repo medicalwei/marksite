@@ -304,7 +304,7 @@ class Marksite_Parser
 	{
 		$dir_handler = opendir($dir);
 		while (($filename = readdir($dir_handler)) !== false) {
-			if ($filename == "." || $filename == "..")
+			if (preg_match("/^\./", $filename))
 			{
 				continue;
 			}
