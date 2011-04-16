@@ -19,10 +19,13 @@ class Marksite_Parser
 	var $blocks = array();
 
 	# recursive delete from http://php.net/manual/en/class.recursivedirectoryiterator.php
-	function empty_dir($dir) {
+	function empty_dir($dir)
+	{
 		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::CHILD_FIRST);
-		foreach ($iterator as $path) {
-			if ($path->isDir()) {
+		foreach ($iterator as $path)
+		{
+			if ($path->isDir())
+			{
 				rmdir($path->__toString());
 			}
 			else
@@ -33,7 +36,8 @@ class Marksite_Parser
 		rmdir($dir);
 	}
 
-	function copy_files($src, $dst) {
+	function copy_files($src, $dst)
+	{
 		$ignored_files = array("php", "markdown", "html", "md");
 		$ignored_files_re = implode("|", $ignored_files);
 
@@ -214,13 +218,7 @@ class Marksite_Parser
 
 	function write_themed($dst_file, $title, $contents)
 	{
-		/* some usable variable for theme */
-
-		/*
-		moved theme out of src. we cannot know where is the resources of the theme.
-		$theme_path = MARKSITE_ABSOLUTE_PATH.MARKSITE_THEME_PATH;
-		*/
-
+		# some usable variable for theme
 		$home_path = MARKSITE_ABSOLUTE_PATH;
 
 		if ($page_output = fopen("$dst_file.html", "c"))
@@ -303,7 +301,8 @@ class Marksite_Parser
 	function prepare_blocks($dir)
 	{
 		$dir_handler = opendir($dir);
-		while (($filename = readdir($dir_handler)) !== false) {
+		while (($filename = readdir($dir_handler)) !== false)
+		{
 			if (preg_match("/^\./", $filename))
 			{
 				continue;
