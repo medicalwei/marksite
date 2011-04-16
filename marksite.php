@@ -129,24 +129,26 @@ class Marksite_Parser
 
 			if (preg_match("/^http:\/\//", $file))
 			{
-				$menu[$file] = array(
+				$menu[] = array(
 						'uri' => $file,
 						'title' => $title
 						);
 			}
 			else if (is_dir($src_file))
 			{
-				$menu[$file] = array(
+				$menu[] = array(
 						'uri' => $uri_before.$file."/",
 						'title' => $title,
-						'menu' => $this->prepare_menu($dir.$file."/")
+						'menu' => $this->prepare_menu($dir.$file."/"),
+						'file' => $file
 						);
 			}
 			else if (file_exists("$src_file.markdown") || file_exists("$src_file.md") || file_exists("$src_file.php") || file_exists("$src_file.html"))
 			{
-				$menu[$file] = array(
+				$menu[] = array(
 						'uri' => $uri_before.$file.".html",
-						'title' => $title
+						'title' => $title,
+						'file' => $file
 						);
 			}
 		}
@@ -170,23 +172,36 @@ class Marksite_Parser
 		$target_menu = $this->menu;
 		for ($i = 0; $i < $level; $i++)
 		{
-			$target_menu = $this->menu[$this->current[$i]]['menu'];
+			$target_file = $this->current[$i];
+			foreach ($target_menu as $menuitem)
+			{ 
+				if ($menuitem['file'] == $target_file)
+				{
+					$target_menu = $menuitem['menu'];
+					break;
+				}
+			}
 		}
 
-		return $this->menu_recursion($target_menu, $level, $depth);
+		return $this->menu_recursion($target_menu, $level, $depth, true);
 	}
 
 
-	function menu_recursion($target_menu, $level, $depth)
+	function menu_recursion($target_menu, $level, $depth, $is_current = false)
 	{
 		$output = "";
-		foreach ($target_menu as $file => $menuitem)
+		foreach ($target_menu as $menuitem)
 		{
 			$uri = $menuitem['uri'];
+			$file = $menuitem['file'];
 			$title = $menuitem['title'];
 
-			if ($file == $this->current[$level])
+			$is_current_next = false;
+
+			if ($is_current && $file == $this->current[$level])
 			{
+				$is_current_next = true;
+
 				#ancestor: current level, and not index
 				if ($level < count($this->current)-1 && $this->current[$level+1] != "index")
 				{
@@ -207,7 +222,7 @@ class Marksite_Parser
 			if ( $depth>1 && isset($menuitem['menu']) )
 			{
 				$output .= "\n<ul>\n";
-				$output .= $this->menu_recursion($menuitem['menu'], $level+1, $depth-1);
+				$output .= $this->menu_recursion($menuitem['menu'], $level+1, $depth-1, $is_current_next);
 				$output .= "</ul>\n";
 			}
 
