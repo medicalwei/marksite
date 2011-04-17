@@ -129,26 +129,24 @@ class Marksite_Parser
 
 			if (preg_match("/^http:\/\//", $file))
 			{
-				$menu[] = array(
+				$menu[$file] = array(
 						'uri' => $file,
 						'title' => $title
 						);
 			}
 			else if (is_dir($src_file))
 			{
-				$menu[] = array(
+				$menu[$file] = array(
 						'uri' => $uri_before.$file."/",
 						'title' => $title,
 						'menu' => $this->prepare_menu($dir.$file."/"),
-						'file' => $file
 						);
 			}
 			else if (file_exists("$src_file.markdown") || file_exists("$src_file.md") || file_exists("$src_file.php") || file_exists("$src_file.html"))
 			{
-				$menu[] = array(
+				$menu[$file] = array(
 						'uri' => $uri_before.$file.".html",
 						'title' => $title,
-						'file' => $file
 						);
 			}
 		}
@@ -172,15 +170,7 @@ class Marksite_Parser
 		$target_menu = $this->menu;
 		for ($i = 0; $i < $level; $i++)
 		{
-			$target_file = $this->current[$i];
-			foreach ($target_menu as $menuitem)
-			{ 
-				if ($menuitem['file'] == $target_file)
-				{
-					$target_menu = $menuitem['menu'];
-					break;
-				}
-			}
+			$target_menu = $target_menu[$this->current[$i]]['menu'];
 		}
 
 		return $this->menu_recursion($target_menu, $level, $depth, true);
@@ -190,10 +180,9 @@ class Marksite_Parser
 	function menu_recursion($target_menu, $level, $depth, $is_current = false)
 	{
 		$output = "";
-		foreach ($target_menu as $menuitem)
+		foreach ($target_menu as $file => $menuitem)
 		{
 			$uri = $menuitem['uri'];
-			$file = $menuitem['file'];
 			$title = $menuitem['title'];
 
 			$is_current_next = false;
