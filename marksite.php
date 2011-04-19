@@ -208,7 +208,7 @@ class Marksite_Parser
 
 			$output .= "<a href=\"$uri\">$title</a>";
 
-			if ( $depth>1 && isset($menuitem['menu']) )
+			if ( $depth>1 && isset($menuitem['menu']) && !empty($menuitem['menu']) )
 			{
 				$output .= "\n<ul>\n";
 				$output .= $this->menu_recursion($menuitem['menu'], $level+1, $depth-1, $is_current_next);
