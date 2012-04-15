@@ -69,6 +69,7 @@ class Marksite_Parser
                     }
                 } else {
                     copy($src_path, $dst_path);
+                    print("* $src_path\n");
                 }
             }
         }
