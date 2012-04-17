@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html manifest="<?php echo $home_path; ?>site.appcache">
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
