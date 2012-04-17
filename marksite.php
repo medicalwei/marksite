@@ -56,10 +56,10 @@ class Marksite_Parser
             $quoted_src = preg_quote($src, '/'); // escape quote
             $dst_path   = preg_replace("/^$quoted_src/",$dst,$src_path);
 
-            // don't copy hidden files and prohibited files
+            // don't copy prohibited files
             if (
                 !preg_match(
-                    "/(\/\.[^\/\.]|\.($ignored_files_re)\$)/",
+                    "/\.($ignored_files_re)\$/",
                     $src_path
                 )
             ) {
