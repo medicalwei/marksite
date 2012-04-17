@@ -22,7 +22,7 @@ class Marksite_Parser
     var $blocks = array();
 
     // manifest for appcache
-    var $manifest = "";
+    var $manifest = "CACHE MANIFEST\n";
 
     // recursive delete from
     // http://php.net/manual/en/class.recursivedirectoryiterator.php
