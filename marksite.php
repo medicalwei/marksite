@@ -21,6 +21,9 @@ class Marksite_Parser
     // blocks
     var $blocks = array();
 
+    // manifest for appcache
+    var $manifest = "";
+
     // recursive delete from
     // http://php.net/manual/en/class.recursivedirectoryiterator.php
     function empty_dir($dir)
@@ -54,6 +57,7 @@ class Marksite_Parser
         foreach ($iterator as $path) {
             $src_path   = $path->__toString();
             $quoted_src = preg_quote($src, '/'); // escape quote
+            $clean_path = preg_replace("/^$quoted_src/","",$src_path);
             $dst_path   = preg_replace("/^$quoted_src/",$dst,$src_path);
 
             // don't copy prohibited files
@@ -70,6 +74,8 @@ class Marksite_Parser
                 } else {
                     copy($src_path, $dst_path);
                     print("* $src_path\n");
+
+                    $this->manifest .= "$clean_path\n";
                 }
             }
         }
@@ -98,6 +104,10 @@ class Marksite_Parser
 
             print("## Copying Files\n");
             $this->copy_files(MARKSITE_SRC_PATH, MARKSITE_DST_PATH);
+            print("\n");
+
+            print("## Writing Manifest\n");
+            $this->write_manifest();
             print("\n");
 
             print("**All Done!**\n");
@@ -259,8 +269,9 @@ class Marksite_Parser
                 continue;
             }
 
-            $src_file = MARKSITE_SRC_PATH.$dir.$file;
-            $dst_file = MARKSITE_DST_PATH.$dir.$file;
+            $act_file = $dir.$file;
+            $src_file = MARKSITE_SRC_PATH.$act_file;
+            $dst_file = MARKSITE_DST_PATH.$act_file;
 
             // indicating where i am
             array_push($this->current, $file);
@@ -274,9 +285,13 @@ class Marksite_Parser
             } elseif (file_exists($src_file)) {
                 print("* $src_file (copy)\n");
                 copy($src_file, $dst_file);
+
+                $this->manifest .= "$act_file\n";
             } else {
                 $contents = $this->generate_context($src_file);
                 $this->write_themed($dst_file, $title, $contents);
+
+                $this->manifest .= "$act_file.html\n";
             }
 
             array_pop($this->current);
@@ -344,6 +359,13 @@ class Marksite_Parser
         }
 
         return $contents;
+    }
+
+    function write_manifest() {
+        $manifest_path = MARKSITE_DST_PATH."site.appcache";
+        $manifest_file = fopen($manifest_path, "w");
+        fwrite($manifest_file, $this->manifest);
+        fclose($manifest_file);
     }
 
 }
