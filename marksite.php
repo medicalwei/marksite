@@ -22,7 +22,9 @@ class Marksite_Parser
     var $blocks = array();
 
     // manifest for appcache
-    var $manifest = "CACHE MANIFEST\n";
+    var $manifest = array('static' => '',
+                          'parsed' => '',
+                          'md5summings' => '');
 
     // recursive delete from
     // http://php.net/manual/en/class.recursivedirectoryiterator.php
@@ -75,7 +77,8 @@ class Marksite_Parser
                     copy($src_path, $dst_path);
                     print("* $src_path\n");
 
-                    $this->manifest .= "$clean_path\n";
+                    $this->manifest['md5summings'] .= md5_file($dst_path);
+                    $this->manifest['static'] .= "$clean_path\n";
                 }
             }
         }
@@ -286,12 +289,15 @@ class Marksite_Parser
                 print("* $src_file (copy)\n");
                 copy($src_file, $dst_file);
 
-                $this->manifest .= "$act_file\n";
+
+                $this->manifest['md5summings'] .= md5_file($dst_file);
+                $this->manifest['static'] .= "$act_file\n";
             } else {
                 $contents = $this->generate_context($src_file);
                 $this->write_themed($dst_file, $title, $contents);
 
-                $this->manifest .= "$act_file.html\n";
+                $this->manifest['md5summings'] .= md5_file("$dst_file.html");
+                $this->manifest['parsed'] .= "$act_file.html\n";
             }
 
             array_pop($this->current);
@@ -362,9 +368,33 @@ class Marksite_Parser
     }
 
     function write_manifest() {
+        if (MARKSITE_APPCACHE == 'none') {
+          return;
+        }
+
         $manifest_path = MARKSITE_DST_PATH."site.appcache";
-        $manifest_file = fopen($manifest_path, "w");
-        fwrite($manifest_file, $this->manifest);
+        $manifest_file = fopen($manifest_path, "x");
+
+        if ($manifest_file) { // the file does not exist before write.
+          fwrite($manifest_file, "CACHE MANIFEST\n");
+        } else {
+          $manifest_file = fopen($manifest_path, "a");
+        }
+
+        $md5sum = md5($this->manifest['md5summings']);
+        fwrite($manifest_file, "\n# MARKSITE APPCACHE $md5sum\n");
+        fwrite($manifest_file, "CACHE:\n");
+
+        switch (MARKSITE_APPCACHE) {
+          case 'all':
+            fwrite($manifest_file, "\n# STATIC CONTENTS\n");
+            fwrite($manifest_file, $this->manifest['static']);
+            // not breaked here.
+          case 'parsed':
+            fwrite($manifest_file, "\n# PARSED CONTENTS\n");
+            fwrite($manifest_file, $this->manifest['parsed']);
+        }
+
         fclose($manifest_file);
     }
 
