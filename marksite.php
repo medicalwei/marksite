@@ -297,7 +297,11 @@ class Marksite_Parser
                 $this->write_themed($dst_file, $title, $contents);
 
                 $this->manifest['md5summings'] .= md5_file("$dst_file.html");
-                $this->manifest['parsed'] .= "$act_file.html\n";
+                if ($file == 'index') {
+                    $this->manifest['parsed'] .= "./$dir\n";
+                } else {
+                    $this->manifest['parsed'] .= "./$act_file.html\n";
+                }
             }
 
             array_pop($this->current);
